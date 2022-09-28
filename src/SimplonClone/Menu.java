@@ -11,7 +11,8 @@ public class Menu {
         System.out.println("  Apprenant Menu");
         System.out.println("------------------");
         System.out.println("Pour voir les briefs : 1");
-        System.out.println("Logout : 2");
+        System.out.println("Notifications : 2");
+        System.out.println("Logout : 3");
     }
 
     public static void formateurMenu() {
@@ -20,7 +21,8 @@ public class Menu {
         System.out.println("------------------");
         System.out.println("Cree un brief : 1");
         System.out.println("ajouter un apprenant a une promos : 2");
-        System.out.println("Logout : 3");
+        System.out.println("ajouter un brief au promo : 3");
+        System.out.println("Logout : 4");
     }
 
     public static void adminMenu() {

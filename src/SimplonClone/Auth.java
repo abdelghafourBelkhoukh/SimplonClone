@@ -24,6 +24,7 @@ public class Auth {
         String password = input.nextLine();
 
         user = State.getUserByEmail(email);
+        System.out.println(user);
 
         if (user == null || !user.verifyPassword(password)) {
 
@@ -42,5 +43,14 @@ public class Auth {
 
 
         return user;
+    }
+
+    public static boolean logout() {
+        setUser(null);
+        Main.setUser(null);
+        Main.setProgramOn(false);
+//        todo: remove admin when logged out
+
+        return true;
     }
 }

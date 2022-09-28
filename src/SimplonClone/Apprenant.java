@@ -16,7 +16,7 @@ public class Apprenant extends Person{
         String password = State.getInputString("Entrer le password :");
         Apprenant apprenant = new Apprenant(id, firstName, lastName, email, password);
         State.apprenants.put(email, apprenant);
-        State.apprenants.put(email, apprenant);
+        State.apprenantsById.put(id, apprenant);
 
         if (State.apprenants.get(email) == null){
             System.out.println("La compte apprenant n'a pas été créée!");
@@ -30,7 +30,7 @@ public class Apprenant extends Person{
     public static boolean asignToPromo() {
 
         System.out.println("-------------------------");
-        System.out.println("-  Liste des Apprenant  -");
+        System.out.println("-  Liste des Apprenants  -");
         System.out.println("-------------------------");
         State.apprenants.forEach(
                 (index, objet) -> System.out.println(objet.getId() + " : " + objet.getFirstName() + " " + objet.getLastName())
@@ -45,13 +45,13 @@ public class Apprenant extends Person{
                 (index, objet) -> System.out.println(objet.getId() + " : " + objet.getName())
         );
         System.out.println("------------------------------------");
-        int promoChose = State.getInputInt("Choiser le numero du formateur");
+        int promoChose = State.getInputInt("Choiser le numero de la promo");
         //clear console here
         Apprenant apprenant = getApprenantById(apprenantChose);
-
+        System.out.println(apprenant);
         if (apprenant.setPromoId(promoChose)){
 
-            System.out.println("La promo est attribuée au compte formateur avec succès");
+            System.out.println("La promo est attribuée au compte Apprenant avec succès");
             return true;
         }
 
