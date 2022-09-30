@@ -2,13 +2,14 @@ package SimplonClone.services;
 
 import SimplonClone.Models.StateModel;
 import SimplonClone.Models.User.ApprenantModel;
+import models.SendEnhancedRequestBody;
+import models.SendEnhancedResponseBody;
+import models.SendRequestMessage;
+import services.Courier;
+import services.SendService;
 
+import java.io.IOException;
 import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
-import javax.activation.*;
-import javax.mail.Session;
-import javax.mail.Transport;
 
 public class Notification {
     public static void getEmail(int promoId) {
@@ -27,48 +28,26 @@ public class Notification {
 
     public static void sendEmail(String mailMessage, String mail)
     {
-        // email ID of Recipient.
-        String recipient = mail;
+        Courier.init("pk_prod_YFX88J0RXZM3WRQ2M0FTHWF4BMV7");
 
-        // email ID of  Sender.
-        String sender = "belkhoukh.abdelghafour@gmail.com";
+        SendEnhancedRequestBody sendEnhancedRequestBody = new SendEnhancedRequestBody();
+        SendRequestMessage sendRequestMessage = new SendRequestMessage();
+        HashMap<String, String> to = new HashMap<String, String>();
+        to.put("email", mail);
+        sendRequestMessage.setTo(to);
 
-        // using host as localhost
-        String host = "127.0.0.1";
+        HashMap<String, String> content = new HashMap<String, String>();
+        content.put("title", "Nouveau brief");
+        content.put("body", mailMessage);
+        sendRequestMessage.setContent(content);
 
-        // Getting system properties
-        Properties properties = System.getProperties();
+        sendEnhancedRequestBody.setMessage(sendRequestMessage);
 
-        // Setting up mail server
-        properties.setProperty("mail.smtp.host", host);
-
-        // creating session object to get properties
-        Session session = Session.getDefaultInstance(properties);
-
-        try
-        {
-            // MimeMessage object.
-            MimeMessage message = new MimeMessage(session);
-
-            // Set From Field: adding senders email to from field.
-            message.setFrom(new InternetAddress(sender));
-
-            // Set To Field: adding recipient's email to from field.
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
-
-            // Set Subject: subject of the email
-            message.setSubject("Nouveau brief");
-
-            // set body of the email.
-            message.setText(mailMessage);
-
-            // Send email.
-            Transport.send(message);
-            System.out.println("Mail successfully sent");
-        }
-        catch (MessagingException mex)
-        {
-            mex.printStackTrace();
+        try {
+            SendEnhancedResponseBody response = new SendService().sendEnhancedMessage(sendEnhancedRequestBody);
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

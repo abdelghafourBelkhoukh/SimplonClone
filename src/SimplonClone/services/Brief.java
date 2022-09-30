@@ -59,7 +59,7 @@ public class Brief {
             String dateAndTime = NotificationController.CurrentDateTime();
 
             String message = "Bonjour cher apprenant,\nle brief " + brief.getTitle() +
-                    " a été ajouté à vos promo le " + dateAndTime +
+                    " a ete ajoute a vos promo le " + dateAndTime +
                     "\npar votre formateur " + formateur.getFirstName() + " " + formateur.getLastName() + " .";
 
             StateModel.notifications.put(promoChose, new NotificationModel(notificationId, message, promoChose, briefChose));

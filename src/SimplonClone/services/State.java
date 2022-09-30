@@ -17,7 +17,7 @@ public class State {
     public static void load() {
 
         StateModel.userByEmail = new HashMap<>();
-        StateModel.userByEmail.put("belkhoukh16", new PersonModel(3, 1, "abdelghafour", "belkhoukh", "belkhoukh@gmail.com", "123456", RoleModel.ADMIN));
+        StateModel.userByEmail.put("admin", new PersonModel(3, 1, "abdelghafour", "belkhoukh", "belkhoukh@gmail.com", "admin", RoleModel.ADMIN));
 
     }
 

@@ -5,6 +5,7 @@ import SimplonClone.Controllers.StateController;
 import SimplonClone.Models.MenuModel;
 import SimplonClone.Models.RoleModel;
 import SimplonClone.Models.User.PersonModel;
+import SimplonClone.databses.ConnectionMysql;
 
 public class Main {
 
@@ -12,7 +13,6 @@ public class Main {
     public static boolean programOn = true;
     public static RoleModel role;
     public static void main(String[] args) {
-
         MenuModel.welcome();
         AuthController.login();
 
@@ -21,7 +21,6 @@ public class Main {
             while (user != null){
                 int orderChose = StateController.getInputInt();
                 StateController.action(orderChose, role);
-                clearConsole();
                 MenuModel.menuByRole();
             }
 
@@ -31,9 +30,9 @@ public class Main {
 
     }
 
-    public static void clearConsole() {
-        //
-    }
+//    public static void clearConsole() {
+//        //
+//    }
 
 
 }
