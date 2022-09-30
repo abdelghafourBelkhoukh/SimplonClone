@@ -1,6 +1,6 @@
 package SimplonClone.Models;
 
-import SimplonClone.View.Main;
+import SimplonClone.Controllers.StartController;
 
 public class MenuModel {
     public static void welcome() {
@@ -39,7 +39,7 @@ public class MenuModel {
     }
 
     public static void menuByRole() {
-        switch (Main.role) {
+        switch (StartController.role) {
             case APPRENANT -> apprenantMenu();
             case FORMATEUR -> formateurMenu();
             default -> adminMenu();

@@ -1,10 +1,10 @@
 package SimplonClone.servicesDB;
 
+import SimplonClone.Controllers.StartController;
 import SimplonClone.Controllers.StateController;
 import SimplonClone.Models.AuthModel;
 import SimplonClone.Models.MenuModel;
 import SimplonClone.Models.User.PersonModel;
-import SimplonClone.View.Main;
 
 import java.util.Scanner;
 
@@ -44,7 +44,7 @@ public class Auth {
     public static void login(){
         StateController.load();
         StateController.setUser(authentication());
-        Main.role = Main.user.getRole();
+        StartController.role = StartController.user.getRole();
 
     }
 }

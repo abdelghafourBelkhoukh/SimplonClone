@@ -2,7 +2,6 @@ package SimplonClone.Controllers;
 
 import SimplonClone.Models.RoleModel;
 import SimplonClone.Models.User.PersonModel;
-import SimplonClone.View.Main;
 import SimplonClone.services.State;
 
 public class StateController {
@@ -37,10 +36,10 @@ public class StateController {
     }
 
     public static void setUser(PersonModel user) {
-        Main.user = user;
+        StartController.user = user;
     }
 
     public static void setProgramOn(boolean programOn) {
-        Main.programOn = programOn;
+        StartController.programOn = programOn;
     }
 }

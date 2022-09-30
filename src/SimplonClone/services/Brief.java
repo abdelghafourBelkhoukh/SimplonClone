@@ -2,13 +2,13 @@ package SimplonClone.services;
 
 import SimplonClone.Controllers.BriefController;
 import SimplonClone.Controllers.NotificationController;
+import SimplonClone.Controllers.StartController;
 import SimplonClone.Controllers.StateController;
 import SimplonClone.Models.AuthModel;
 import SimplonClone.Models.BriefModel;
 import SimplonClone.Models.NotificationModel;
 import SimplonClone.Models.StateModel;
 import SimplonClone.Models.User.PersonModel;
-import SimplonClone.View.Main;
 
 
 public class Brief {
@@ -66,7 +66,7 @@ public class Brief {
 
             StateModel.apprenants.forEach(
                 (index, objet) -> {
-                    if (objet.getPromoId() == Main.user.getPromoId()) {
+                    if (objet.getPromoId() == StartController.user.getPromoId()) {
 
                         NotificationController.sendEmail(message, objet.getEmail());
                     }
