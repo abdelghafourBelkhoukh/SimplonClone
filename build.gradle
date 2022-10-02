@@ -31,4 +31,5 @@ dependencies {
     implementation 'com.sanctionco.jmail:jmail:1.4.1'
     implementation 'com.sun.mail:jakarta.mail:2.0.1'
     implementation 'com.courier:courier-java:1.6.0'
+    implementation 'org.postgresql:postgresql:42.5.0'
 }
