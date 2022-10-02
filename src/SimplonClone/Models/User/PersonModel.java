@@ -22,6 +22,7 @@ public class PersonModel {
         this.password = password;
         this.role = role;
 
+
     }
 
     public boolean verifyPassword(String password) {

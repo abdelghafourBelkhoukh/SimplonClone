@@ -3,6 +3,7 @@ package SimplonClone.Controllers;
 import SimplonClone.Models.MenuModel;
 import SimplonClone.Models.RoleModel;
 import SimplonClone.Models.User.PersonModel;
+import SimplonClone.databses.ConnectionMysql;
 
 public class StartController {
     public static PersonModel user;
@@ -10,6 +11,10 @@ public class StartController {
     public static RoleModel role;
 
     public static void start() {
+
+        ConnectionMysql db = new ConnectionMysql();
+        db.connect();
+
         MenuModel.welcome();
         AuthController.login();
 
