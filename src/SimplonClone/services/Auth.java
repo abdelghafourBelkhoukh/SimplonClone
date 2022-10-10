@@ -7,6 +7,7 @@ import SimplonClone.Models.AuthModel;
 import SimplonClone.Models.MenuModel;
 import SimplonClone.Models.User.PersonModel;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Auth {
@@ -42,9 +43,9 @@ public class Auth {
         return AuthModel.getUser();
     }
 
-    public static void login(){
+    public static void login() {
         StateController.load();
-        StateController.setUser(AuthController.authentication());
+//        StateController.setUser(AuthController.authentication());
         StartController.role = StartController.user.getRole();
 
     }

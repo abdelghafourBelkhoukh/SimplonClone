@@ -11,7 +11,7 @@ public class PersonModel {
     private String email;
     private String password;
     private RoleModel role;
-
+    
     public PersonModel(int id, int promoId, String firstName, String lastName, String email, String password, RoleModel role) {
 
         this.id = id;
@@ -92,7 +92,20 @@ public class PersonModel {
     public RoleModel getRole() {
         return role;
     }
+//    public void test(){
+//        String s = "abddba";
+//        String sReverse = "";
+//        int j = 0;
+//        for (int i = s.length()-1 ; i >= 0 ; i--, j++){
+//            sReverse += s.charAt(i);
+//        }
+//
+//        System.out.println(s.equals(sReverse));
+//
+//    }
 }
+
+
 
 
 

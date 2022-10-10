@@ -1,65 +1,71 @@
 package SimplonClone.servicesDB.user;
 
 import SimplonClone.Controllers.StateController;
-import SimplonClone.Models.StateModel;
 import SimplonClone.Models.User.FormateurModel;
+import SimplonClone.databses.ConnectionMysql;
+import SimplonClone.servicesDB.Promo;
+
+import java.sql.*;
+import java.util.ArrayList;
 
 public class Formateur {
-    public static boolean create(int newFormateurId) {
+    static Connection conn = ConnectionMysql.conn;
+    static Statement statement;
+    static PreparedStatement statement1 = null;
+    static int result;
+    static String formateur = "";
+    public static boolean create() {
         System.out.println("Pour créer un compte formateur,\nremplissez les champs suivants :");
         String firstName = StateController.getInputString("Entrer le prenom:");
         String lastName = StateController.getInputString("Entrer le nom");
         String email = StateController.getInputString("Entrer l'email :");
-//        String promoName = State.getInputString("Entrer le nom de la promo :");
-//        Promo promo = getPromoByName(promoName);
-//        int promoId = promo.getId();
         String password = StateController.getInputString("Entrer le password :");
 
-        FormateurModel formateur = new FormateurModel(newFormateurId, firstName, lastName, email, password);
-        StateModel.formateurs.put(email, formateur);
-        StateModel.formateursById.put(newFormateurId, formateur);
+        String sql = "INSERT INTO users(firstname, lastname, email, password, roleId) VALUES ('"+firstName+"','"+lastName+"','"+email+"','"+password+"', 'FORMATEUR')";
+        try {
+            statement = conn.createStatement();
+            result = statement.executeUpdate(sql);
+            if (result == 0) {
+                System.out.println("Le compte du formateur n'a pas été créée!");
+                return false;
+            }
+            System.out.println("le compte du formateur créée avec succès");
+        } catch (SQLException e) {
 
-        if (StateModel.formateurs.get(email) == null) {
-            System.out.println("La compte formateur n'a pas été créée!");
-            return false;
+            throw new RuntimeException(e);
         }
-        System.out.println("compte formateur créée avec succès");
+
+
         return true;
     }
 
     public static boolean asignToPromo() {
-        System.out.println("-------------------------");
-        System.out.println("-  Liste des formateur  -");
-        System.out.println("-------------------------");
-        StateModel.formateurs.forEach(
-                (index, objet) -> System.out.println(objet.getId() + " : " + objet.getFirstName() + " " + objet.getLastName())
-        );
-        System.out.println("------------------------------------");
-        int formateurChose = StateController.getInputInt("Choiser le numero du formateur");
-        // clear console here
-        System.out.println("----------------------");
-        System.out.println("-  Liste des promos  -");
-        System.out.println("----------------------");
-        StateModel.promos.forEach(
-                (index, objet) -> System.out.println(objet.getId() + " : " + objet.getName())
-        );
-        System.out.println("------------------------------------");
-        int promoChose = StateController.getInputInt("Choiser le numero du formateur");
-        //clear console here
-        FormateurModel formateur = getFormateurById(formateurChose);
 
-        if (formateur.setPromoId(promoChose)) {
+        System.out.println("------------------------------------");
+        int formateurChose = StateController.getInputInt("Choiser ID du formateur");
+
+        System.out.println("------------------------------------");
+        int promoChose = StateController.getInputInt("Choiser ID du promos");
+
+        String sql = "UPDATE users SET promoId = " + promoChose + " WHERE id =" + formateurChose;
+        try {
+            statement = conn.createStatement();
+            int rs = statement.executeUpdate(sql);
+                if(rs == 0) {
+                     System.out.println("L'opération n'a pas fonctionné");
+                    return false;
+                }
 
             System.out.println("La promo est attribuée au compte formateur avec succès");
             return true;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
-        System.out.println("L'opération n'a pas fonctionné");
-        return false;
     }
 
     public static FormateurModel getFormateurById(int id) {
 
-        return StateModel.formateursById.get(id);
+        return SimplonClone.services.user.Formateur.formateursById.get(id);
     }
 }

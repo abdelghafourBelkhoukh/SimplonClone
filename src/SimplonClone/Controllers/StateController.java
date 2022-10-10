@@ -2,9 +2,14 @@ package SimplonClone.Controllers;
 
 import SimplonClone.Models.RoleModel;
 import SimplonClone.Models.User.PersonModel;
-import SimplonClone.services.State;
+import SimplonClone.servicesDB.State;
+
+import java.util.HashMap;
 
 public class StateController {
+
+    public static  HashMap<String, PersonModel> userByEmail;
+
     public static void load() {
 
         State.load();

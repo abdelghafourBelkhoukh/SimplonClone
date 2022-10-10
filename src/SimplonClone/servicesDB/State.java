@@ -3,41 +3,39 @@ package SimplonClone.servicesDB;
 import SimplonClone.Controllers.BriefController;
 import SimplonClone.Controllers.NotificationController;
 import SimplonClone.Controllers.PromoController;
+import SimplonClone.Controllers.StateController;
 import SimplonClone.Controllers.User.ApprenantController;
 import SimplonClone.Controllers.User.FormateurController;
 import SimplonClone.Models.AuthModel;
 import SimplonClone.Models.RoleModel;
-import SimplonClone.Models.StateModel;
 import SimplonClone.Models.User.PersonModel;
+import SimplonClone.servicesDB.Promo;
+import SimplonClone.servicesDB.Brief;
+import SimplonClone.servicesDB.user.Apprenant;
+import SimplonClone.servicesDB.user.Formateur;
 
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class State {
-    public static void load() {
-
-        StateModel.userByEmail = new HashMap<>();
-        StateModel.userByEmail.put("belkhoukh16", new PersonModel(3, 1, "abdelghafour", "belkhoukh", "belkhoukh@gmail.com", "123456", RoleModel.ADMIN));
-
-    }
-
+    
     public static PersonModel getUserByEmail(String email) {
-        PersonModel apprenant = StateModel.apprenants.get(email);
-        PersonModel formateur = StateModel.formateurs.get(email);
-        PersonModel admin = StateModel.userByEmail.get(email);
+//        PersonModel apprenant = Apprenant.apprenants.get(email);
+//        PersonModel formateur = Formateur.formateurs.get(email);
+        PersonModel admin = StateController.userByEmail.get(email);
 
-        if (apprenant != null) {
-
-            return apprenant;
-        }
-        if (formateur != null) {
-
-            return formateur;
-        }
-        if (admin != null) {
-
-            return admin;
-        }
+//        if (apprenant != null) {
+//
+//            return apprenant;
+//        }
+//        if (formateur != null) {
+//
+//            return formateur;
+//        }
+//        if (admin != null) {
+//
+//            return admin;
+//        }
 
         return null;
     }
@@ -68,35 +66,20 @@ public class State {
         switch (role) {
             case ADMIN -> {
                 switch (chose) {
-                    case 1 -> {
-                        PromoController.create(StateModel.newPromoId);
-                        StateModel.newPromoId++;
-                    }
-                    case 2 -> {
-                        ApprenantController.create(StateModel.newApprenantId);
-                        StateModel.newApprenantId++;
-                    }
-                    case 3 -> {
-                        FormateurController.create(StateModel.newFormateurId);
-                        StateModel.newFormateurId++;
-                    }
-                    case 4 -> FormateurController.asignToPromo();
-                    case 5 -> AuthModel.logout();
+                    case 1 -> Promo.create();
+                    case 2 -> Apprenant.create();
+                    case 3 -> Formateur.create();
+                    case 4 -> Formateur.asignToPromo();
+                    case 5 -> Auth.logout();
                     default -> System.out.println("Ce choix n'est existe pas!!!");
                 }
             }
             case FORMATEUR -> {
                 switch (chose) {
-                    case 1 -> {
-                        BriefController.createBrief(StateModel.newBriefId);
-                        StateModel.newBriefId++;
-                    }
-                    case 2 -> ApprenantController.asignToPromo();
-                    case 3 -> {
-                        BriefController.asignToPromo(StateModel.newNotificationId, AuthModel.getUser());
-                        StateModel.newNotificationId++;
-                    }
-                    case 4 -> AuthModel.logout();
+                    case 1 -> Brief.createBrief();
+                    case 2 -> Apprenant.asignToPromo();
+                    case 3 -> Brief.asignToPromo();
+                    case 4 -> Auth.logout();
                     default -> System.out.println("Ce choix n'est existe pas!!!");
                 }
             }
@@ -109,5 +92,12 @@ public class State {
                 }
             }
         }
+    }
+
+
+
+
+
+    public static void load() {
     }
 }

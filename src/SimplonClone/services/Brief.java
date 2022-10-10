@@ -7,11 +7,17 @@ import SimplonClone.Controllers.StateController;
 import SimplonClone.Models.AuthModel;
 import SimplonClone.Models.BriefModel;
 import SimplonClone.Models.NotificationModel;
-import SimplonClone.Models.StateModel;
 import SimplonClone.Models.User.PersonModel;
+import SimplonClone.services.user.Apprenant;
+
+import java.util.HashMap;
 
 
 public class Brief {
+    public static HashMap<String, BriefModel> briefs = new HashMap<>();
+    public static HashMap<Integer, BriefModel> briefById = new HashMap<>();
+    public static int newBriefId = 1;
+
     public static boolean createBrief(int id) {
 
         System.out.println("Pour créer un brief,\nremplissez les champs suivants :");
@@ -20,9 +26,9 @@ public class Brief {
         PersonModel formateur = AuthModel.getUser();
         int formateurId = formateur.getId();
         BriefModel brief = new BriefModel(id, title, description, formateurId);
-        StateModel.briefs.put(title, brief);
-        StateModel.briefById.put(id, brief);
-        if (StateModel.briefs.get(title) != null) {
+        briefs.put(title, brief);
+        briefById.put(id, brief);
+        if (briefs.get(title) != null) {
             System.out.println("Brief added");
             return true;
         }
@@ -36,7 +42,7 @@ public class Brief {
         System.out.println("-------------------------");
         System.out.println("-  Liste des Briefs  -");
         System.out.println("-------------------------");
-        StateModel.briefs.forEach(
+        briefs.forEach(
                 (index, objet) -> {
                     System.out.println(objet.getId() + " : " + objet.getTitle());
                 }
@@ -47,7 +53,7 @@ public class Brief {
         System.out.println("----------------------");
         System.out.println("-  Liste des promos  -");
         System.out.println("----------------------");
-        StateModel.promos.forEach(
+        Promo.promos.forEach(
                 (index, objet) -> System.out.println(objet.getId() + " : " + objet.getName())
         );
         System.out.println("------------------------------------");
@@ -62,9 +68,9 @@ public class Brief {
                     " a ete ajoute a vos promo le " + dateAndTime +
                     "\npar votre formateur " + formateur.getFirstName() + " " + formateur.getLastName() + " .";
 
-            StateModel.notifications.put(promoChose, new NotificationModel(notificationId, message, promoChose, briefChose));
+            Notification.notifications.put(promoChose, new NotificationModel(notificationId, message, promoChose, briefChose));
 
-            StateModel.apprenants.forEach(
+            Apprenant.apprenants.forEach(
                 (index, objet) -> {
                     if (objet.getPromoId() == StartController.user.getPromoId()) {
 
@@ -84,7 +90,7 @@ public class Brief {
 
     public static boolean showBriefs(int promoId) {
 
-        StateModel.briefs.forEach(
+        briefs.forEach(
                 (index, objet) -> {
                     if (objet.getPromoId() == promoId) {
 
@@ -96,6 +102,6 @@ public class Brief {
     }
     public static BriefModel getById(int id) {
 
-        return StateModel.briefById.get(id);
+        return briefById.get(id);
     }
 }

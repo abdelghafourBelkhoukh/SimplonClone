@@ -1,7 +1,8 @@
 package SimplonClone.services;
 
-import SimplonClone.Models.StateModel;
+import SimplonClone.Models.NotificationModel;
 import SimplonClone.Models.User.ApprenantModel;
+import SimplonClone.services.user.Apprenant;
 import models.SendEnhancedRequestBody;
 import models.SendEnhancedResponseBody;
 import models.SendRequestMessage;
@@ -12,9 +13,12 @@ import java.io.IOException;
 import java.util.*;
 
 public class Notification {
+    public static HashMap<Integer, NotificationModel> notifications = new HashMap<>();
+    public static int newNotificationId = 1;
+
     public static void getEmail(int promoId) {
-        ApprenantModel test = StateModel.apprenantsByPromoId.get(promoId);
-        StateModel.notifications.forEach(
+        ApprenantModel test = Apprenant.apprenantsByPromoId.get(promoId);
+        notifications.forEach(
                 (index, objet) -> {
                     if (objet.getPromoId() == promoId) {
 

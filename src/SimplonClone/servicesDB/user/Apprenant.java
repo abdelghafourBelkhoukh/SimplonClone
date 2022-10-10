@@ -1,11 +1,20 @@
 package SimplonClone.servicesDB.user;
 
 import SimplonClone.Controllers.StateController;
-import SimplonClone.Models.StateModel;
 import SimplonClone.Models.User.ApprenantModel;
+import SimplonClone.databses.ConnectionMysql;
+import SimplonClone.services.Promo;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Apprenant {
-    public static boolean create(int id) {
+    static Connection conn = ConnectionMysql.conn;
+    static Statement statement;
+    static int result;
+    public static boolean create() {
 
         System.out.println("Pour créer un compte Apprenant,\nremplissez les champs suivants :");
 
@@ -13,53 +22,51 @@ public class Apprenant {
         String lastName = StateController.getInputString("Entrer le nom :");
         String email = StateController.getInputString("Entrer l'email :");
         String password = StateController.getInputString("Entrer le password :");
-        ApprenantModel apprenant = new ApprenantModel(id, firstName, lastName, email, password);
-        StateModel.apprenants.put(email, apprenant);
-        StateModel.apprenantsById.put(id, apprenant);
+        String sql = "INSERT INTO users(firstname, lastname, email, password, roleId) VALUES ('"+firstName+"','"+lastName+"','"+email+"','"+password+"', 'APPRENANT')";
+        try {
+            statement = conn.createStatement();
+            result = statement.executeUpdate(sql);
+            if (result == 0) {
+                System.out.println("La compte apprenant n'a pas été créée!");
+                return false;
+            }
+            System.out.println("compte apprenant créée avec succès");
+        } catch (SQLException e) {
 
-        if (StateModel.apprenants.get(email) == null) {
-            System.out.println("La compte apprenant n'a pas été créée!");
-            return false;
+            throw new RuntimeException(e);
         }
-        System.out.println("compte apprenant créée avec succès");
+
+
         return true;
 
     }
 
     public static boolean asignToPromo() {
 
-        System.out.println("-------------------------");
-        System.out.println("-  Liste des Apprenants  -");
-        System.out.println("-------------------------");
-        StateModel.apprenants.forEach(
-                (index, objet) -> System.out.println(objet.getId() + " : " + objet.getFirstName() + " " + objet.getLastName())
-        );
         System.out.println("------------------------------------");
-        int apprenantChose = StateController.getInputInt("Choiser le numero d'apprenant");
-        // clear console here
-        System.out.println("----------------------");
-        System.out.println("-  Liste des promos  -");
-        System.out.println("----------------------");
-        StateModel.promos.forEach(
-                (index, objet) -> System.out.println(objet.getId() + " : " + objet.getName())
-        );
+        int apprenantChose = StateController.getInputInt("Choiser ID du Apprenant");
+
         System.out.println("------------------------------------");
-        int promoChose = StateController.getInputInt("Choiser le numero de la promo");
-        //clear console here
-        ApprenantModel apprenant = getApprenantById(apprenantChose);
-        System.out.println(apprenant);
-        if (apprenant.setPromoId(promoChose)) {
+        int promoChose = StateController.getInputInt("Choiser ID du promos");
+
+        String sql = "UPDATE users SET promoId = " + promoChose + " WHERE id =" + apprenantChose ;
+        try {
+            statement = conn.createStatement();
+            int rs = statement.executeUpdate(sql);
+            if(rs == 0) {
+                System.out.println("L'opération n'a pas fonctionné");
+                return false;
+            }
 
             System.out.println("La promo est attribuée au compte Apprenant avec succès");
             return true;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-
-        System.out.println("L'opération n'a pas fonctionné");
-        return false;
     }
 
     public static ApprenantModel getApprenantById(int id) {
 
-        return StateModel.apprenantsById.get(id);
+        return SimplonClone.services.user.Apprenant.apprenantsById.get(id);
     }
 }

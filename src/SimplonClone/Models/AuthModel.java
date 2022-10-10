@@ -2,10 +2,15 @@ package SimplonClone.Models;
 
 import SimplonClone.Controllers.StateController;
 import SimplonClone.Models.User.PersonModel;
+import SimplonClone.databses.ConnectionMysql;
+//import jdk.internal.icu.text.UnicodeSet;
 
-public class AuthModel {
+import java.sql.Connection;
+
+public class AuthModel extends ConnectionMysql {
 
     private static PersonModel user;
+    public static Connection conn = ConnectionMysql.conn;
 
     public static PersonModel getUser() {
 
@@ -22,4 +27,5 @@ public class AuthModel {
 
         return true;
     }
+
 }

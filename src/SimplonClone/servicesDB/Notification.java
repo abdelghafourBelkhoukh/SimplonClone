@@ -1,10 +1,8 @@
 package SimplonClone.servicesDB;
 
-import SimplonClone.Models.StateModel;
-
 public class Notification {
     public static void getEmail(int promoId) {
-        StateModel.notifications.forEach(
+        SimplonClone.services.Notification.notifications.forEach(
                 (index, objet) -> {
                     if (objet.getPromoId() == promoId) {
 

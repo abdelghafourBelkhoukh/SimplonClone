@@ -3,12 +3,14 @@ package SimplonClone.services;
 import SimplonClone.Controllers.BriefController;
 import SimplonClone.Controllers.NotificationController;
 import SimplonClone.Controllers.PromoController;
+import SimplonClone.Controllers.StateController;
 import SimplonClone.Controllers.User.ApprenantController;
 import SimplonClone.Controllers.User.FormateurController;
 import SimplonClone.Models.AuthModel;
 import SimplonClone.Models.RoleModel;
-import SimplonClone.Models.StateModel;
 import SimplonClone.Models.User.PersonModel;
+import SimplonClone.services.user.Apprenant;
+import SimplonClone.services.user.Formateur;
 
 import java.util.HashMap;
 import java.util.Scanner;
@@ -16,15 +18,15 @@ import java.util.Scanner;
 public class State {
     public static void load() {
 
-        StateModel.userByEmail = new HashMap<>();
-        StateModel.userByEmail.put("admin", new PersonModel(3, 1, "abdelghafour", "belkhoukh", "belkhoukh@gmail.com", "admin", RoleModel.ADMIN));
+        StateController.userByEmail = new HashMap<>();
+        StateController.userByEmail.put("admin", new PersonModel(3, 1, "abdelghafour", "belkhoukh", "belkhoukh@gmail.com", "admin", RoleModel.ADMIN));
 
     }
 
     public static PersonModel getUserByEmail(String email) {
-        PersonModel apprenant = StateModel.apprenants.get(email);
-        PersonModel formateur = StateModel.formateurs.get(email);
-        PersonModel admin = StateModel.userByEmail.get(email);
+        PersonModel apprenant = Apprenant.apprenants.get(email);
+        PersonModel formateur = Formateur.formateurs.get(email);
+        PersonModel admin = StateController.userByEmail.get(email);
 
         if (apprenant != null) {
 
@@ -69,16 +71,16 @@ public class State {
             case ADMIN -> {
                 switch (chose) {
                     case 1 -> {
-                        PromoController.create(StateModel.newPromoId);
-                        StateModel.newPromoId++;
+                        PromoController.create(Promo.newPromoId);
+                        Promo.newPromoId++;
                     }
                     case 2 -> {
-                        ApprenantController.create(StateModel.newApprenantId);
-                        StateModel.newApprenantId++;
+                        ApprenantController.create(Apprenant.newApprenantId);
+                        Apprenant.newApprenantId++;
                     }
                     case 3 -> {
-                        FormateurController.create(StateModel.newFormateurId);
-                        StateModel.newFormateurId++;
+                        FormateurController.create(Formateur.newFormateurId);
+                        Formateur.newFormateurId++;
                     }
                     case 4 -> FormateurController.asignToPromo();
                     case 5 -> AuthModel.logout();
@@ -88,13 +90,13 @@ public class State {
             case FORMATEUR -> {
                 switch (chose) {
                     case 1 -> {
-                        BriefController.createBrief(StateModel.newBriefId);
-                        StateModel.newBriefId++;
+                        BriefController.createBrief(Brief.newBriefId);
+                        Brief.newBriefId++;
                     }
                     case 2 -> ApprenantController.asignToPromo();
                     case 3 -> {
-                        BriefController.asignToPromo(StateModel.newNotificationId, AuthModel.getUser());
-                        StateModel.newNotificationId++;
+                        BriefController.asignToPromo(Notification.newNotificationId, AuthModel.getUser());
+                        Notification.newNotificationId++;
                     }
                     case 4 -> AuthModel.logout();
                     default -> System.out.println("Ce choix n'est existe pas!!!");

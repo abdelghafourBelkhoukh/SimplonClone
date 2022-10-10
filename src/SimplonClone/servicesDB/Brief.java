@@ -1,77 +1,80 @@
 package SimplonClone.servicesDB;
 
 import SimplonClone.Controllers.NotificationController;
+import SimplonClone.Controllers.StartController;
 import SimplonClone.Controllers.StateController;
 import SimplonClone.Models.AuthModel;
 import SimplonClone.Models.BriefModel;
 import SimplonClone.Models.NotificationModel;
-import SimplonClone.Models.StateModel;
 import SimplonClone.Models.User.PersonModel;
+import SimplonClone.databses.ConnectionMysql;
+import SimplonClone.services.Notification;
+import SimplonClone.services.Promo;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 
 public class Brief {
-    public static boolean createBrief(int id) {
+    static Connection conn = ConnectionMysql.conn;
+    static int result;
+    static Statement statement;
+    public static boolean createBrief() {
 
         System.out.println("Pour créer un brief,\nremplissez les champs suivants :");
         String title = StateController.getInputString("Entrer le titre");
         String description = StateController.getInputString("Entrer une description");
-        PersonModel formateur = AuthModel.getUser();
+        PersonModel formateur = StartController.user;
         int formateurId = formateur.getId();
-        BriefModel brief = new BriefModel(id, title, description, formateurId);
-        StateModel.briefs.put(title, brief);
-        StateModel.briefById.put(id, brief);
-        if (StateModel.briefs.get(title) != null) {
+
+        String sql = "INSERT INTO briefs(title, description, formateurId) VALUES ('"+title+"','"+description+"','"+formateurId+"')";
+        try {
+            statement = conn.createStatement();
+            result = statement.executeUpdate(sql);
+            if (result == 0) {
+                System.out.println("Brief not added");
+                return false;
+            }
             System.out.println("Brief added");
-            return true;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
-        System.out.println("Brief not added");
-        return false;
+
+        return true;
     }
 
-    public static boolean asignToPromo(int notificationId, PersonModel formateur) {
+    public static boolean asignToPromo() {
 
-        System.out.println("-------------------------");
-        System.out.println("-  Liste des Briefs  -");
-        System.out.println("-------------------------");
-        StateModel.briefs.forEach(
-                (index, objet) -> {
-                    System.out.println(objet.getId() + " : " + objet.getTitle());
-                }
-        );
         System.out.println("------------------------------------");
-        int briefChose = StateController.getInputInt("Choiser le numero de brief");
-        // clear console here
-        System.out.println("----------------------");
-        System.out.println("-  Liste des promos  -");
-        System.out.println("----------------------");
-        StateModel.promos.forEach(
-                (index, objet) -> System.out.println(objet.getId() + " : " + objet.getName())
-        );
+        int briefChose = StateController.getInputInt("Choiser ID du brief");
+
         System.out.println("------------------------------------");
-        int promoChose = StateController.getInputInt("Choiser le numero de la promo");
-        //clear console here
-        BriefModel brief = getById(briefChose);
-        if (brief.setPromoId(promoChose)) {
+        int promoChose = StateController.getInputInt("Choiser ID du promos");
 
-            String dateAndTime = NotificationController.CurrentDateTime();
+        String sql = "UPDATE briefs SET promoId = " + promoChose + " WHERE id =" + briefChose;
+        try {
+            statement = conn.createStatement();
+            int rs = statement.executeUpdate(sql);
+            if(rs == 0) {
+                System.out.println("L'opération n'a pas fonctionné");
 
-            String message = "Bonjour cher apprenant,\nle brief " + brief.getTitle() +
-                    " a été ajouté à vos promo le " + dateAndTime +
-                    "\npar votre formateur " + formateur.getFirstName() + " " + formateur.getLastName() + " .";
+                return false;
+            }
 
-            StateModel.notifications.put(promoChose, new NotificationModel(notificationId, message, promoChose, briefChose));
             System.out.println("Le brief est attribuée au promo avec succès");
-            return true;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
-        System.out.println("L'opération n'a pas fonctionné");
-        return false;
+        return true;
     }
 
     public static boolean showBriefs(int promoId) {
 
-        StateModel.briefs.forEach(
+        SimplonClone.services.Brief.briefs.forEach(
                 (index, objet) -> {
                     if (objet.getPromoId() == promoId) {
 
@@ -83,6 +86,7 @@ public class Brief {
     }
     public static BriefModel getById(int id) {
 
-        return StateModel.briefById.get(id);
+        return SimplonClone.services.Brief.briefById.get(id);
     }
+
 }

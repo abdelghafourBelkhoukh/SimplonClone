@@ -1,10 +1,17 @@
 package SimplonClone.services.user;
 
 import SimplonClone.Controllers.StateController;
-import SimplonClone.Models.StateModel;
 import SimplonClone.Models.User.ApprenantModel;
+import SimplonClone.services.Promo;
+
+import java.util.HashMap;
 
 public class Apprenant {
+    public static HashMap<String, ApprenantModel> apprenants = new HashMap<>();
+    public static HashMap<Integer, ApprenantModel> apprenantsById = new HashMap<>();
+    public static HashMap<Integer, ApprenantModel> apprenantsByPromoId = new HashMap<>();
+    public static int newApprenantId = 1;
+
     public static boolean create(int id) {
 
         System.out.println("Pour créer un compte Apprenant,\nremplissez les champs suivants :");
@@ -14,10 +21,10 @@ public class Apprenant {
         String email = StateController.getInputString("Entrer l'email :");
         String password = StateController.getInputString("Entrer le password :");
         ApprenantModel apprenant = new ApprenantModel(id, firstName, lastName, email, password);
-        StateModel.apprenants.put(email, apprenant);
-        StateModel.apprenantsById.put(id, apprenant);
+        apprenants.put(email, apprenant);
+        apprenantsById.put(id, apprenant);
 
-        if (StateModel.apprenants.get(email) == null) {
+        if (apprenants.get(email) == null) {
             System.out.println("La compte apprenant n'a pas été créée!");
             return false;
         }
@@ -31,7 +38,7 @@ public class Apprenant {
         System.out.println("-------------------------");
         System.out.println("-  Liste des Apprenants  -");
         System.out.println("-------------------------");
-        StateModel.apprenants.forEach(
+        apprenants.forEach(
                 (index, objet) -> System.out.println(objet.getId() + " : " + objet.getFirstName() + " " + objet.getLastName())
         );
         System.out.println("------------------------------------");
@@ -40,7 +47,7 @@ public class Apprenant {
         System.out.println("----------------------");
         System.out.println("-  Liste des promos  -");
         System.out.println("----------------------");
-        StateModel.promos.forEach(
+        Promo.promos.forEach(
                 (index, objet) -> System.out.println(objet.getId() + " : " + objet.getName())
         );
         System.out.println("------------------------------------");
@@ -60,6 +67,6 @@ public class Apprenant {
 
     public static ApprenantModel getApprenantById(int id) {
 
-        return StateModel.apprenantsById.get(id);
+        return apprenantsById.get(id);
     }
 }

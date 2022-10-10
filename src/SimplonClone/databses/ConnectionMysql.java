@@ -1,95 +1,36 @@
 package SimplonClone.databses;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
+
+// Infos BD
 public class ConnectionMysql {
+   final String url = "jdbc:mysql://localhost:3306/simplonclone";
+   final String username = "root";
+   final String password = "";
+   public static Connection conn = null;
+   static ConnectionMysql db;
+   public static PreparedStatement stmt;
 
-   private final String url = "jdbc:postgresql://localhost/cloneSimplon";
-   private final String user = "postgres";
-   private final String password = "123456";
+   // Connect BD a MYSQL
+   public ConnectionMysql()
+   {
+      try{
+         Class.forName("com.mysql.cj.jdbc.Driver");
+         conn = DriverManager.getConnection(url, username, password);
 
-   /**
-    * Connect to the PostgreSQL database
-    *
-    * @return a Connection object
-    */
-   public Connection connect() {
-      Connection conn = null;
-      try {
-         conn = DriverManager.getConnection(url, user, password);
-         if (conn == null) {
-
-            System.out.println("Connected to the PostgreSQL server Failed");
-            return conn;
-         }
-            System.out.println("Connected to the PostgreSQL server successfully.");
-
-      } catch (SQLException e) {
-         System.out.println(e.getMessage());
+      }catch(Exception e)
+      {
+         System.out.println("error => " + e);
       }
+   }
 
-      return conn;
+   public static  ConnectionMysql connect(){
+      if (conn ==null){
+         db = new ConnectionMysql();
+      }
+      return  db;
    }
 
 
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    } private final String url = "jdbc:postgresql://localhost/dvdrental";
-//    private final String user = "postgres";
-//    private final String password = "<add your password>";
-//
-//    public ConnectionMysql(){
-//        ConnectionMysql app = new ConnectionMysql();
-//        app.connect();
-//    }
-//
-//    public Connection connect() {
-//        Connection conn = null;
-//        try {
-//            conn = DriverManager.getConnection(url, user, password);
-//            System.out.println("Connected to the PostgreSQL server successfully.");
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        }
-//
-//        return conn;
-//    }
-
-

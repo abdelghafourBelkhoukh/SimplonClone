@@ -1,16 +1,15 @@
 package SimplonClone.Controllers;
 
 import SimplonClone.Models.User.PersonModel;
-import SimplonClone.View.Main;
-import SimplonClone.services.Auth;
+import SimplonClone.servicesDB.Auth;
 
 public class AuthController {
-    public static PersonModel authentication() {
+//    public static PersonModel authentication() {
+//
+//        return Auth.authentication();
+//    }
 
-        return Auth.authentication();
-    }
-
-    public static void login(){
+    public static void login() {
         Auth.login();
 
     }

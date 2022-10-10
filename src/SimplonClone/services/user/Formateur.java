@@ -1,10 +1,16 @@
 package SimplonClone.services.user;
 
 import SimplonClone.Controllers.StateController;
-import SimplonClone.Models.StateModel;
 import SimplonClone.Models.User.FormateurModel;
+import SimplonClone.services.Promo;
+
+import java.util.HashMap;
 
 public class Formateur {
+    public static HashMap<String, FormateurModel> formateurs = new HashMap<>();
+    public static HashMap<Integer, FormateurModel> formateursById = new HashMap<>();
+    public static int newFormateurId = 1;
+
     public static boolean create(int newFormateurId) {
         System.out.println("Pour créer un compte formateur,\nremplissez les champs suivants :");
         String firstName = StateController.getInputString("Entrer le prenom:");
@@ -16,10 +22,10 @@ public class Formateur {
         String password = StateController.getInputString("Entrer le password :");
 
         FormateurModel formateur = new FormateurModel(newFormateurId, firstName, lastName, email, password);
-        StateModel.formateurs.put(email, formateur);
-        StateModel.formateursById.put(newFormateurId, formateur);
+        formateurs.put(email, formateur);
+        formateursById.put(newFormateurId, formateur);
 
-        if (StateModel.formateurs.get(email) == null) {
+        if (formateurs.get(email) == null) {
             System.out.println("La compte formateur n'a pas été créée!");
             return false;
         }
@@ -31,7 +37,7 @@ public class Formateur {
         System.out.println("-------------------------");
         System.out.println("-  Liste des formateur  -");
         System.out.println("-------------------------");
-        StateModel.formateurs.forEach(
+        formateurs.forEach(
                 (index, objet) -> System.out.println(objet.getId() + " : " + objet.getFirstName() + " " + objet.getLastName())
         );
         System.out.println("------------------------------------");
@@ -40,7 +46,7 @@ public class Formateur {
         System.out.println("----------------------");
         System.out.println("-  Liste des promos  -");
         System.out.println("----------------------");
-        StateModel.promos.forEach(
+        Promo.promos.forEach(
                 (index, objet) -> System.out.println(objet.getId() + " : " + objet.getName())
         );
         System.out.println("------------------------------------");
@@ -60,6 +66,6 @@ public class Formateur {
 
     public static FormateurModel getFormateurById(int id) {
 
-        return StateModel.formateursById.get(id);
+        return formateursById.get(id);
     }
 }
